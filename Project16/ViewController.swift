@@ -45,3 +45,40 @@ final class ViewController: UIViewController {
     }
 }
 
+// MARK: - MKMapViewDelegate
+
+extension ViewController: MKMapViewDelegate {
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        // If the annotation isn't from a capital city, it must return nil so iOS uses a default view.
+        guard annotation is Capital else { return nil }
+        
+        // Define a reuse identifier. This is a string that will be used to ensure we reuse annotation views as much as possible.
+        let identifier = "Capital"
+        
+        // Try to dequeue an annotation view from the map view's pool of unused views.
+        var annotaionView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier)
+        
+        if annotaionView == nil {
+            // If it isn't able to find a reusable view, create a new one using MKPinAnnotationView and sets its canShowCallout property to true. This triggers the popup with the city name.
+            annotaionView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: identifier)
+            annotaionView?.canShowCallout = true
+            
+            // Create a new UIButton using the built-in .detailDisclosure type. This is a small blue "i" symbol with a circle around it.
+            annotaionView?.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
+        } else {
+            // If it can reuse a view, update that view to use a different annotation.
+            annotaionView?.annotation = annotation
+        }
+        
+        return annotaionView
+    }
+    
+    func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
+        guard let capital = view.annotation as? Capital else { return }
+        
+        let alertController = UIAlertController(title: capital.title, message: capital.info, preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "OK", style: .default))
+        present(alertController, animated: true)
+    }
+}
+
