@@ -19,7 +19,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KGr-Of-H5t">
-                                <rect key="frame" x="0.0" y="103" width="393" height="715"/>
+                                <rect key="frame" x="0.0" y="103" width="393" height="749"/>
                                 <standardMapConfiguration key="preferredConfiguration"/>
                             </mapView>
                         </subviews>
@@ -28,7 +28,7 @@
                         <constraints>
                             <constraint firstItem="KGr-Of-H5t" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailing" id="cLN-tD-EBT"/>
                             <constraint firstItem="KGr-Of-H5t" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="kWC-sF-Yks"/>
-                            <constraint firstItem="KGr-Of-H5t" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="qNH-0f-HF5"/>
+                            <constraint firstItem="KGr-Of-H5t" firstAttribute="bottom" secondItem="8bC-Xf-vdC" secondAttribute="bottom" id="qNH-0f-HF5"/>
                             <constraint firstItem="KGr-Of-H5t" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="x0Z-dd-f2n"/>
                         </constraints>
                     </view>
