@@ -15,6 +15,10 @@ final class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            image: UIImage(systemName: "map"), style: .plain, target: self, action: #selector(mapTypeButtonTapped)
+        )
+        
         let london = Capital(
             title: "London",
             coordinate: CLLocationCoordinate2D(latitude: 51.507222, longitude: -0.1275),
@@ -43,6 +47,34 @@ final class ViewController: UIViewController {
         
         mapView.addAnnotations([london, oslo, paris, rome, washington])
     }
+    
+    @objc
+    private func mapTypeButtonTapped() {
+        let alertController = UIAlertController(title: "Choose map type", message: nil, preferredStyle: .actionSheet)
+        alertController.addAction(UIAlertAction(title: "Standard", style: .default) { [weak self] _ in
+            if #available(iOS 16.0, *) {
+                self?.mapView.preferredConfiguration = MKStandardMapConfiguration()
+            } else {
+                self?.mapView.mapType = .standard
+            }
+        })
+        alertController.addAction(UIAlertAction(title: "Hybrid", style: .default) { [weak self] _ in
+            if #available(iOS 16.0, *) {
+                self?.mapView.preferredConfiguration = MKHybridMapConfiguration()
+            } else {
+                self?.mapView.mapType = .hybrid
+            }
+        })
+        alertController.addAction(UIAlertAction(title: "Satellite", style: .default) { [weak self] _ in
+            if #available(iOS 16.0, *) {
+                self?.mapView.preferredConfiguration = MKImageryMapConfiguration()
+            } else {
+                self?.mapView.mapType = .satellite
+            }
+        })
+        alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        present(alertController, animated: true)
+    }
 }
 
 // MARK: - MKMapViewDelegate
@@ -68,14 +100,12 @@ extension ViewController: MKMapViewDelegate {
         } else {
             // If it can reuse a view, update that view to use a different annotation.
             annotaionView?.annotation = annotation
-            
-            if let markerAnnotaionView = annotaionView as? MKMarkerAnnotationView {
-                markerAnnotaionView.markerTintColor = .green
-            }
         }
         
-        
-        
+        if let markerAnnotaionView = annotaionView as? MKMarkerAnnotationView {
+            markerAnnotaionView.markerTintColor = .green
+        }
+    
         return annotaionView
     }
     
