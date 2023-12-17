@@ -12,6 +12,7 @@ final class ViewController: UIViewController {
     // MARK: - IBOutlets
     @IBOutlet private var mapView: MKMapView!
     
+    // MARK: - UIViewController
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -48,6 +49,7 @@ final class ViewController: UIViewController {
         mapView.addAnnotations([london, oslo, paris, rome, washington])
     }
     
+    // MARK: - Private Methods
     @objc
     private func mapTypeButtonTapped() {
         let alertController = UIAlertController(title: "Choose map type", message: nil, preferredStyle: .actionSheet)
@@ -112,9 +114,10 @@ extension ViewController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
         guard let capital = view.annotation as? Capital else { return }
         
-        let alertController = UIAlertController(title: capital.title, message: capital.info, preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title: "OK", style: .default))
-        present(alertController, animated: true)
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        guard let webViewController = storyboard.instantiateViewController(withIdentifier: "web") as? WebViewController else { return }
+        webViewController.capital = capital.title
+        present(webViewController, animated: true)
     }
 }
 
